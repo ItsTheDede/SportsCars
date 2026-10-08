@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Criar conta";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <main class="login-page">
+        <section class="login-card">
+            <h1 class="login-title">Criar conta</h1>
+
+            @if (TempData["RegisterMessage"] is string message)
+            {
+                <p class="login-message">@message</p>
+            }
+
+            <form asp-controller="Account" asp-action="Register" method="post">
+                <input class="login-field" type="text" name="name" placeholder="Nome" required />
+                <input class="login-field" type="email" name="email" placeholder="Email" required />
+                <input class="login-field" type="password" name="password" placeholder="Palavra-passe" required />
+                <input class="login-field" type="password" name="confirmPassword" placeholder="Confirmar palavra-passe" required />
+                <button class="login-submit" type="submit">Criar conta</button>
+            </form>
+
+            <p class="auth-switch">
+                Já tens conta?
+                <a asp-controller="Account" asp-action="Login">Iniciar sessão</a>
+            </p>
+        </section>
+    </main>
+</body>
+</html>

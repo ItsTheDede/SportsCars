@@ -1,0 +1,88 @@
+@model blah.Models.CartPageViewModel
+@{
+    ViewData["Title"] = "Carrinho";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+</head>
+<body>
+    <main class="car-details-page">
+        <section class="car-details-card">
+            <a class="back-link" asp-controller="Home" asp-action="Index">← Voltar à loja</a>
+            <h1 class="car-details-title">Carrinho</h1>
+
+            @if (!Model.Items.Any())
+            {
+                <p>O carrinho está vazio.</p>
+            }
+            else
+            {
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Carro</th>
+                            <th>Foto</th>
+                            <th>Modelo 3D</th>
+                            <th>Preço</th>
+                            <th>Qtd</th>
+                            <th>Subtotal</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <td>@item.CarName</td>
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(item.ImagePath))
+                                    {
+                                        <img src="@item.ImagePath" alt="@item.CarName" style="width: 130px; height: 85px; object-fit: cover; border-radius: 8px; border: 1px solid #4a567f;" />
+                                    }
+                                    else
+                                    {
+                                        <span>Sem foto</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(item.Model3dPath))
+                                    {
+                                        <model-viewer src="@item.Model3dPath"
+                                                      alt="Modelo 3D de @item.CarName"
+                                                      camera-controls
+                                                      auto-rotate
+                                                      style="width: 180px; height: 110px; border-radius: 8px; background: #111827;">
+                                        </model-viewer>
+                                    }
+                                    else
+                                    {
+                                        <span>Sem modelo 3D</span>
+                                    }
+                                </td>
+                                <td>@item.UnitPrice.ToString("C0")</td>
+                                <td>@item.Quantity</td>
+                                <td>@((item.UnitPrice * item.Quantity).ToString("C0"))</td>
+                                <td>
+                                    <form asp-controller="Cart" asp-action="Remove" method="post" style="margin:0;">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="login-btn" style="padding: 8px 12px;">Remover</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <p class="car-price">Total: @Model.Total.ToString("C0")</p>
+            }
+        </section>
+    </main>
+</body>
+</html>

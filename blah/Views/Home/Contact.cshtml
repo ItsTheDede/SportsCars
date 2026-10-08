@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Contacto/Suporte";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <main class="login-page">
+        <section class="login-card">
+            <h1 class="login-title">Contacto/Suporte</h1>
+
+            @if (TempData["ContactMessage"] is string message)
+            {
+                <p class="login-message">@message</p>
+            }
+
+            <form asp-controller="Home" asp-action="Contact" method="post">
+                <input class="login-field" type="email" name="email" placeholder="E-mail" required />
+                <input class="login-field" type="text" name="nome" placeholder="Nome" required />
+                <input class="login-field" type="text" name="assunto" placeholder="Assunto" required />
+                <textarea class="login-field" name="contextoProblema" placeholder="Contexto do seu problema" rows="6" required></textarea>
+                <button class="login-submit" type="submit">Enviar</button>
+            </form>
+
+            <p class="auth-switch">
+                <a asp-controller="Home" asp-action="Index">Voltar à página inicial</a>
+            </p>
+        </section>
+    </main>
+</body>
+</html>

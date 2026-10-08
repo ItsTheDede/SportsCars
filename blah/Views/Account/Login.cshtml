@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Iniciar sessão";
+    Layout = null;
+    var returnUrl = ViewData["ReturnUrl"] as string;
+}
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <main class="login-page">
+        <section class="login-card">
+            <h1 class="login-title">Iniciar sessão</h1>
+
+            @if (TempData["LoginMessage"] is string message)
+            {
+                <p class="login-message">@message</p>
+            }
+
+            <form asp-controller="Account" asp-action="Login" method="post">
+                <input type="hidden" name="returnUrl" value="@returnUrl" />
+                <input class="login-field" type="email" name="email" placeholder="Email" required />
+                <input class="login-field" type="password" name="password" placeholder="Palavra-passe" required />
+                <button class="login-submit" type="submit">Entrar</button>
+            </form>
+
+            <p class="auth-switch">
+                Não tens conta?
+                <a asp-controller="Account" asp-action="Register">Criar conta</a>
+            </p>
+        </section>
+    </main>
+</body>
+</html>

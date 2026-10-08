@@ -1,0 +1,210 @@
+﻿@{
+    ViewData["Title"] = "Store";
+    Layout = null;
+    var userName = Context.Session.GetString("UserName");
+}
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="store-page">
+        <header class="topbar">
+            <div class="brand">STORE</div>
+            <nav class="main-links">
+                <a asp-controller="Cars" asp-action="Catalog">Carros</a>
+                <a asp-controller="Cars" asp-action="Index">Personalizar o Seu carro</a>
+                <a asp-controller="Home" asp-action="Contact">Contacto/Suporte</a>
+            </nav>
+            <a class="login-btn" asp-controller="Cart" asp-action="Index">Carrinho</a>
+            @if (string.IsNullOrWhiteSpace(userName))
+            {
+                <a class="login-btn" asp-controller="Account" asp-action="Login">Iniciar sessão</a>
+            }
+            else
+            {
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <span class="login-btn" style="cursor:default;">@userName</span>
+                    <form asp-controller="Account" asp-action="Logout" method="post" style="margin:0;">
+                        <button class="login-btn" type="submit" style="border:none;">Sair</button>
+                    </form>
+                </div>
+            }
+        </header>
+
+        <main class="content">
+            <section class="hero">
+                <div class="hero-content">
+                    <span class="status" id="heroStatus">About Us</span>
+                    <h1 id="heroTitle">Sobre Nós</h1>
+                    <p id="heroDescription">Somos uma empresa que vende carros totalmente modificados, com os melhores preços mercado. Atualmente somos a melhor empresa do mercado!.</p>
+                    <div class="hero-actions">
+                        <button class="buy-btn" id="heroButton">Ver mais detalhes</button>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="games-list">
+                <a class="game-card active" href="#" data-status="About Us" data-title="Sobre Nós" data-description="Somos uma empresa que vende carros totalmente modificados, com os melhores preços mercado. Atualmente somos a melhor empresa do mercado!" data-button="Ver mais detalhes" data-hero-image="/images/carro-7.jpg">
+                    <span class="thumb thumb-1"></span>
+                    <span>Sobre nós</span>
+                </a>
+                <a class="game-card" href="#" data-status="Experience" data-title="Experiência" data-description="Temos vários anos de experiência na área, com vários clientes que ficaram contentes com a sua experiência dentro do carro" data-button="Ver os carros disponivel" data-hero-image="/images/mecanico-1.jpg">
+                    <span class="thumb thumb-2"></span>
+                    <span>Experiência</span>
+                </a>
+
+                <div class="car-photo-slots">
+                    <a class="car-photo-slot" asp-controller="Cars" asp-action="Details" asp-route-id="porsche-911-gt3-rs">
+                        <span class="car-photo-label">porsche 911 gt3 rs</span>
+                        <img src="~/images/carro-1.jpg" alt="porsche 911 gt3 rs" onerror="this.style.display='none'" />
+                    </a>
+                    <a class="car-photo-slot" asp-controller="Cars" asp-action="Details" asp-route-id="toyota-supra-mk4-1">
+                        <span class="car-photo-label">toyota supra mk4</span>
+                        <img src="~/images/carro-2.jpg" alt="toyota supra mk4" onerror="this.style.display='none'" />
+                    </a>
+                    <a class="car-photo-slot" asp-controller="Cars" asp-action="Details" asp-route-id="porsche-911-carrera-4s">
+                        <span class="car-photo-label">porsche 911 carrera 4s</span>
+                        <img src="~/images/carro-3.jpg" alt="porsche 911 carrera 4s" onerror="this.style.display='none'" />
+                    </a>
+                    <a class="car-photo-slot" asp-controller="Cars" asp-action="Details" asp-route-id="honda-civic-type-r">
+                        <span class="car-photo-label">Honda Civic type-r</span>
+                        <img src="~/images/carro-4.jpg" alt="Honda Civic type-r" onerror="this.style.display='none'" />
+                    </a>
+                    <a class="car-photo-slot" asp-controller="Cars" asp-action="Details" asp-route-id="nissan-gtr-r34">
+                        <span class="car-photo-label">nissan gtr r34</span>
+                        <img src="~/images/carro-5.jpg" alt="nissan gtr r34" onerror="this.style.display='none'" />
+                    </a>
+                    <a class="car-photo-slot" asp-controller="Cars" asp-action="Details" asp-route-id="subaru-sti">
+                        <span class="car-photo-label">subaru sti</span>
+                        <img src="~/images/carro-6.jpg" alt="subaru sti" onerror="this.style.display='none'" />
+                    </a>
+                </div>
+            </aside>
+        </main>
+
+        <section class="testimonials">
+            <h2 class="testimonials-title">Opinião dos clientes</h2>
+            <article class="testimonial-card" id="testimonialCard">
+                <p class="testimonial-text" id="testimonialText">"Comprei o meu GT3 RS aqui e o atendimento foi impecável do início ao fim."</p>
+                <p class="testimonial-meta">
+                    <strong id="testimonialName">Ricardo M.</strong>
+                    <span id="testimonialCar">Porsche 911 GT3 RS</span>
+                </p>
+            </article>
+        </section>
+
+        <section class="sports-showcase" id="carros">
+            <h2 class="testimonials-title">Vários carros desportivos disponíveis</h2>
+            <div class="sports-grid" style="grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                @foreach (var car in blah.Models.CarCatalog.Cars.Values.Take(6))
+                {
+                    <a href="@Url.Action("Details", "Cars", new { id = car.Id })" style="text-decoration: none; color: inherit;">
+                        <article class="sport-item" style="transition: transform 0.2s; border: 1px solid #3f4f7f; border-radius: 12px; overflow: hidden; background: rgba(22, 29, 50, 0.6);"
+                                 onmouseover="this.style.transform='scale(1.02)'"
+                                 onmouseout="this.style.transform='scale(1)'">
+                            <img src="@car.ImagePath" alt="@car.Name" style="width: 100%; height: 180px; object-fit: cover;" />
+                            <h3 style="padding: 12px; margin: 0; font-size: 1.1rem; text-align: center;">@car.Name</h3>
+                        </article>
+                    </a>
+                }
+            </div>
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <a asp-controller="Cars" asp-action="Catalog" style="display: inline-block; padding: 10px 20px; background-color: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#2563eb'" onmouseout="this.style.backgroundColor='#3b82f6'">Ver o Catálogo Completo</a>
+            </div>
+        </section>
+
+        <section class="mechanics-experience">
+            <h2 class="testimonials-title">Experiência dos melhores mecânicos da empresa</h2>
+            <div class="mechanics-grid">
+                <article class="mechanic-card">
+                    <h3>João Ferreira</h3>
+                    <p><strong>18 anos</strong> de experiência em preparação de motores turbo e afinação ECU.</p>
+                </article>
+                <article class="mechanic-card">
+                    <h3>Rui Almeida</h3>
+                    <p><strong>14 anos</strong> focado em suspensão desportiva, travagem de alta performance e setup de pista.</p>
+                </article>
+                <article class="mechanic-card">
+                    <h3>Carlos Pinto</h3>
+                    <p><strong>16 anos</strong> em restauro de clássicos japoneses e upgrades para uso street/performance.</p>
+                </article>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const cards = document.querySelectorAll('.game-card');
+        const heroSection = document.querySelector('.hero');
+        const heroStatus = document.getElementById('heroStatus');
+        const heroTitle = document.getElementById('heroTitle');
+        const heroDescription = document.getElementById('heroDescription');
+        const heroButton = document.getElementById('heroButton');
+        const testimonialCard = document.getElementById('testimonialCard');
+        const testimonialText = document.getElementById('testimonialText');
+        const testimonialName = document.getElementById('testimonialName');
+        const testimonialCar = document.getElementById('testimonialCar');
+
+        const testimonials = [
+            {
+                text: '"Comprei o meu GT3 RS aqui e o atendimento foi impecável do início ao fim."',
+                name: 'Ricardo M.',
+                car: 'Porsche 911 GT3 RS'
+            },
+            {
+                text: '"A preparação do meu Supra MK4 ficou absurda. Entregaram exatamente o que prometeram."',
+                name: 'Tiago S.',
+                car: 'Toyota Supra MK4'
+            },
+            {
+                text: '"Levei um Civic Type-R e adorei o acompanhamento pós-venda. Recomendo totalmente."',
+                name: 'Marta F.',
+                car: 'Honda Civic Type-R'
+            },
+            {
+                text: '"A qualidade do carro e o suporte foram 5 estrelas. Voltava a comprar sem pensar."',
+                name: 'André C.',
+                car: 'Nissan GTR R34'
+            }
+        ];
+
+        let testimonialIndex = 0;
+
+        cards.forEach(card => {
+            card.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                cards.forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+
+                heroStatus.textContent = this.dataset.status;
+                heroTitle.textContent = this.dataset.title;
+                heroDescription.textContent = this.dataset.description;
+                heroButton.textContent = this.dataset.button;
+
+                if (this.dataset.heroImage) {
+                    heroSection.style.setProperty('--hero-image', `url('${this.dataset.heroImage}')`);
+                }
+            });
+        });
+
+        setInterval(() => {
+            testimonialIndex = (testimonialIndex + 1) % testimonials.length;
+            const current = testimonials[testimonialIndex];
+
+            testimonialCard.classList.remove('is-changing');
+            void testimonialCard.offsetWidth;
+            testimonialCard.classList.add('is-changing');
+
+            testimonialText.textContent = current.text;
+            testimonialName.textContent = current.name;
+            testimonialCar.textContent = current.car;
+        }, 4500);
+    </script>
+</body>
+</html>
